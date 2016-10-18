@@ -1,45 +1,59 @@
+import javafx.application.Application;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
+
 import java.util.Scanner;
 
 /*
  * Created by Tanel Laud on 03.10.2016.
  */
-public class movietickets {
-
-    private static Scanner input = new Scanner(System.in);
-
-    public static void main(String[] args) {
-        int selectedMovie;
-        int numberOfTickets;
+public class movietickets extends Application {
+    private DatePicker checkInDatePicker;
 
 
+    public void start(Stage primaryStage) throws Exception {
 
-        String[] movieList = new String[] {"0) John Wick", "1) Nemo", "2) 1944"};
-        for (int i = 0; i < 3; i++) {
-            System.out.println(movieList[i]);
-        }
-        System.out.println("Vali film nr");
-        selectedMovie = input.nextInt();
-        input.nextLine();
+        VBox vbox = new VBox();
+        Scene chooseMovie = new Scene(vbox, 500, 500);
+        primaryStage.setScene(chooseMovie);
+        primaryStage.show();
 
-        System.out.println("Vali kuupäev! Formaat - day/month/year");
-        String selectedDate = input.nextLine();
+        Label title = new Label("Vali film");
 
-        System.out.println("Sisesta piletite arv");
-        numberOfTickets = input.nextInt();
-        input.nextLine();
+        ChoiceBox movieList = new ChoiceBox(FXCollections.observableArrayList(
+                "Avengers", "John wick 2", "Transformers 3")
+        );
 
-        System.out.println("Sisesta koha number: Rida 1-3, kohad 1-20");
-        String selectedSeat = input.nextLine();
+        Label dateTitle = new Label("Vali kuupäev");
+        checkInDatePicker = new DatePicker();
 
+        Label ticketAmountTitle = new Label("Mitu piletit?");
+        ChoiceBox ticketAmount = new ChoiceBox(FXCollections.observableArrayList(
+                "1", "2", "3")
+        );
 
-        for (int i = 0; i < 3; i++) {
-            if (selectedMovie == i) {
-                System.out.println("Valisid filmi: "+movieList[i]);
+        Label seatTitle = new Label("Vali kohad");
+        GridPane grid = new GridPane();
+
+        for (int r = 0; r < 4; r++) {
+            for (int c = 0; c < 4; c++) {
+                int number = 4 * r + c;
+                ToggleButton button = new ToggleButton(String.valueOf(number));
+                grid.add(button, c, r);
             }
         }
-        System.out.println("Valisid kuupäeva:" + selectedDate);
-        System.out.println("Valisid " + numberOfTickets + " piletit");
-        System.out.println("Valisid koha:" + selectedSeat);
+
+        ScrollPane scrollPane = new ScrollPane(grid);
+
+        vbox.getChildren().addAll(title ,movieList,dateTitle, checkInDatePicker, ticketAmountTitle, ticketAmount, seatTitle, grid);
 
     }
 }
